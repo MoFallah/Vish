@@ -1,0 +1,66 @@
+<div class="container">
+  <form [formGroup]="form">
+    <div class="mode-container">
+      <div>Choose Mode</div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          value="online"
+          formControlName="mode"
+        />
+        <label class="form-check-label" for="inlineRadio1">Online</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="radio"
+          value="batch"
+          formControlName="mode"
+        />
+        <label class="form-check-label" for="inlineRadio2">Batch</label>
+      </div>
+      <button
+        *ngIf="shouldShowSearchButton"
+        class="batch-search btn btn-outline-primary btn-sm"
+        (click)="onSearch()"
+        type="button"
+      >
+        Search
+      </button>
+    </div>
+
+    <div class="search-area-container">
+      <div>Search Area</div>
+      <textarea
+        placeholder="Enter your text here"
+        formControlName="text"
+        rows="10"
+        cols="140"
+      >
+      </textarea>
+      <div formGroupName="queries"></div>
+
+      <div class="query-container" formGroupName="queries">
+        <div>Search Queries</div>
+        <div class="query-container--item">
+          <label>Query 1</label>
+          <input formControlName="query1" placeholder="Query 1" />
+        </div>
+        <div class="query-container--item">
+          <label>Query 2</label>
+          <input formControlName="query2" placeholder="Query 2" />
+        </div>
+        <div class="query-container--item">
+          <label>Query 3</label>
+          <input formControlName="query3" placeholder="Query 3" />
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="result-container">
+    <div>Result</div>
+    <vish-result [resultMap]="resultMap" [lines]="textLines"></vish-result>
+  </div>
+</div>

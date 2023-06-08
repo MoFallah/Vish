@@ -1,0 +1,33 @@
+.mode-container {
+    margin-top: 2rem;
+    height: 5rem;
+
+    & .batch-search {
+        display: block;
+        margin-left: 5.5rem;
+        margin-top: 0.5rem;
+        
+    }
+}
+
+.search-area-container {
+    margin-top: 1rem;
+}
+
+.query-container {
+    margin-top: 1rem;
+    &--item {
+        display: block;
+        margin-bottom: 1rem;
+
+        label {
+            margin-right: 0.5rem;
+        }
+    }
+}
+.result-container {
+    margin-top: 5rem;
+}
+
+
+
