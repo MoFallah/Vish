@@ -42,7 +42,6 @@ describe('HomeComponent', () => {
 
   it('Search button should NOT be visible in online mode', () => {
     component.form.controls['mode'].setValue('online');
-    // tick(1000);
     fixture.detectChanges();
     const searchButton = el.query(By.css('.batch-search'));
     expect(searchButton).toBeFalsy();
@@ -141,7 +140,7 @@ describe('HomeComponent', () => {
     const mode = 'batch';
 
     const findMatchesSpy =  spyOn(component, 'findMatches').and.callThrough();
-  
+ 
     component.form.controls['text'].setValue(text);
     component.form.controls['queries'].controls['query1'].setValue(queries.query1);
     component.form.controls['queries'].controls['query2'].setValue(queries.query2);
@@ -164,7 +163,7 @@ describe('HomeComponent', () => {
     const mode = 'batch';
 
     const findMatchesSpy =  spyOn(component, 'findMatches').and.callThrough();
-  
+ 
     component.form.controls['text'].setValue(text);
     component.form.controls['queries'].controls['query1'].setValue(queries.query1);
     component.form.controls['queries'].controls['query2'].setValue(queries.query2);
@@ -174,5 +173,43 @@ describe('HomeComponent', () => {
     expect(findMatchesSpy).not.toHaveBeenCalled();
   });
 
+
+  it('Should show result when there are multiple indices in the main text', () => {
+
+    component.form.controls['text'].setValue(`
+    test case test case test case
+    this is a test test test test
+    multiple occurrences multiple occurrences multiple case`
+    );
+    component.form.controls['queries'].controls['query1'].setValue('case');
+    component.form.controls['queries'].controls['query2'].setValue('test');
+    component.form.controls['queries'].controls['query3'].setValue('multiple');
+    component.form.controls['mode'].setValue('online');
+
+    fixture.detectChanges();
+
+    const caseOccurences = el.queryAll(By.css('span[style*="background-color: yellow"]'));
+    expect(caseOccurences.length).toBe(7);
+
+    const testOccurences = el.queryAll(By.css('span[style*="background-color: red"]'));
+    expect(testOccurences.length).toBe(4);
+
+    const multipleOccurences = el.queryAll(By.css('span[style*="background-color: orange"]'));
+    expect(multipleOccurences.length).toBe(3);
+  });
+
+
+  it('Function getIndices should work as expected', () => {
+
+    const mainString: string = 'This is a re-test to re-check getIndices function return result';
+    const subString: string = 're';
+    const expectedResult: number[] = [10, 21, 50, 57]
+
+    const actualResult: number[] = component.getIndices(mainString, subString);
+
+    expect(actualResult).toEqual(expectedResult);
+  });
+
 });
+
 

@@ -58,16 +58,33 @@ export class HomeComponent implements OnInit {
             this.textLines?.forEach((line: string, lineIndex: number) => {
                 Object.values(queries).forEach((query: string | null, queryIndex: number)=>{
                     if(query) {
-                        const i = line.indexOf(query);
-                        if(i > -1) {
-                            this.resultMap.has(lineIndex) ?
-                            this.resultMap.get(lineIndex)!.push({startIndex: i, endIndex: i + query.length, length: query.length, queryIndex}) :
-                            this.resultMap.set(lineIndex, [{startIndex: i, endIndex: i + query.length, length: query.length, queryIndex}]);
-                        }
+                        const indices: number[] = this.getIndices(line, query);
+                        indices.forEach((i: number) => {
+                            if(i > -1) {
+                                this.resultMap.has(lineIndex) ?
+                                this.resultMap.get(lineIndex)!.push({startIndex: i, endIndex: i + query.length, length: query.length, queryIndex}) :
+                                this.resultMap.set(lineIndex, [{startIndex: i, endIndex: i + query.length, length: query.length, queryIndex}]);
+                            }
+                        });
                     }
                 });
             });
         }
+    }
+
+    getIndices(mainString: string, subString: string) {
+
+        const subStringLength: number = subString.length;
+        if (subStringLength == 0) {
+            return [];
+        }
+
+        let startIndex = 0, index, indices = [];
+        while ((index = mainString.indexOf(subString, startIndex)) > -1) {
+            indices.push(index);
+            startIndex = index + subStringLength;
+        }
+        return indices;
     }
 }
 
